@@ -5,11 +5,7 @@ import connectMongo from './src/config/database.js';
 import {consultaMensagens} from './src/service/awsService.js';
 
 const app = express();
-
 dotenv.config();
-const pastaLocal = process.cwd();
-
-app.use(express.static(pastaLocal));
 app.use(express.json());
 
 app.listen(process.env.PORT || 8000, ()=>{
