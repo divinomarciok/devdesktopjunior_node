@@ -1,23 +1,19 @@
 import Cep from '../model/cepModel.js'
-import {enviaMensagm} from '../service/awsService.js';
-import  {consultaCepApi} from '../service/apiservice.js';
-import { buscaIdPendente } from '../service/mongoService.js';
-
+import {enviaMensagmSQS} from '../service/awsSQS.js';
 
 const receberCep = async (req, res) => {
     try {
         const { cep } = req.body;
 
-        const newCep = new Cep({cep});
+        const newCep = new Cep({cep})
         await newCep.save();
-
+        
         const sqsmensagem = JSON.stringify({ id: newCep._id }); 
-        console.log(newCep._id);
+      
         res.status(200).json({ message: 'CEP recebido', cep });   
 
-
         if(newCep._id){
-            enviaMensagm(sqsmensagem);  
+            enviaMensagmSQS(sqsmensagem);  
         }else{
             console.log("Sem ID do banco, mensagem não enviada");
         }        
@@ -29,27 +25,4 @@ const receberCep = async (req, res) => {
 };
 
 
-const atualizaRegistroBD = async (cepData) => {
-
-    try {
-
-        const response = await consultaCepApi(cepData.cep);
-
-
-
-        cepData = ({
-
-        })
-
-        await cepData.save();
-        console.log(response);
-        
-    } catch (error) {
-        
-    }
-
-}
-
-
-
-export {receberCep, atualizaRegistroBD};
+export {receberCep};

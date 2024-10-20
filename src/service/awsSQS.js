@@ -1,10 +1,10 @@
 import { SQSClient,SendMessageCommand,ReceiveMessageCommand,DeleteMessageCommand } from '@aws-sdk/client-sqs';
-import { buscaIdPendente } from './mongoService.js';
+import { TrataMensagemFila } from './mongoService.js';
 
 
 const sqs = new SQSClient({ region: 'sa-east-1' })
 
-const enviaMensagm = async (mensagem) => {
+const enviaMensagmSQS = async (mensagem) => {
 
     const params = {
         QueueUrl: process.env.SQS_URL,
@@ -14,7 +14,7 @@ const enviaMensagm = async (mensagem) => {
     try {
 
         const data = await sqs.send(new SendMessageCommand(params));
-        console.log('Mensagem na fila:', data.MessageId);
+        console.log('Mensagem na fila: ', data.MessageId);
 
     } catch (err) {
         console.log('Error', err);
@@ -22,7 +22,9 @@ const enviaMensagm = async (mensagem) => {
 
 }
 
-const consultaMensagens = async ()=> {
+
+
+const consultaMensagemSQS = async ()=> {
 
     const params = {
         QueueUrl: process.env.SQS_URL,
@@ -39,13 +41,14 @@ const consultaMensagens = async ()=> {
         const dataMessage = JSON.parse(recebido.Messages[0].Body); 
         console.log(dataMessage.id);
 
-        if(await buscaIdPendente(dataMessage.id)){
+        if(await TrataMensagemFila (dataMessage.id)){
 
             const deleteParams = {
             QueueUrl: process.env.SQS_URL,
             ReceiptHandle: recebido.Messages[0].ReceiptHandle, 
             };
                 
+
             await sqs.send(new DeleteMessageCommand(deleteParams));
             console.log("Mensagem deletada")
 
@@ -65,5 +68,5 @@ const consultaMensagens = async ()=> {
 
 
 
-export {enviaMensagm,consultaMensagens};
+export {enviaMensagmSQS,consultaMensagemSQS};
 
