@@ -13,7 +13,7 @@ const consultaCepApi = async (cep) => {
         }
 
     } catch (error) {
-        console.error('Erro ao consultar o CEP:', error.message);
+        console.error('Erro ao consultar o CEP: ', error.message);
     }
 };
 

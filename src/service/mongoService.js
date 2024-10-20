@@ -2,7 +2,7 @@ import Cep from '../model/cepModel.js';
 import { consultaCepApi } from './apiservice.js';
 
 
-const buscaIdPendente = async (id) => {
+const TrataMensagemFila = async (id) => {
 
     try {
 
@@ -19,7 +19,7 @@ const buscaIdPendente = async (id) => {
             return cepAtualizado;
 
         }else{
-            console.log("Status nao identificado");
+            console.log("Status mensagem SQS nao identificado");
         }
 
     } catch (error) {
@@ -27,6 +27,7 @@ const buscaIdPendente = async (id) => {
     }
 
 };
+
 
 async function atualizaStatus(id,dataCep){
 
@@ -54,4 +55,6 @@ async function atualizaStatus(id,dataCep){
     }
 
 }
-export { buscaIdPendente };
+export { TrataMensagemFila };
+
+
