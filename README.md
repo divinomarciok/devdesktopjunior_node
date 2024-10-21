@@ -7,7 +7,7 @@ O app recebe um numero de CEP por meio de rota POST e após receber esse CEP o m
 
 [PASSSOS PARA EXECUTAR O PROJETO]
 
-#1 - Realizar o npm install para instalar as depedências do
+#1 - Realizar o npm install para instalar as depedências do projeto
 #2 - Criar o arquivo .env na pasta raiz do projeto, com as variaveis "PORT","MONGO_URI","SQS_URL"
 #3 - Após seguir os passos a cima realizar o npm start na pasta do 
 #4 - Enviar requisição do tipo POST na rota "http://localhost:{PORT}/api/cep"  
